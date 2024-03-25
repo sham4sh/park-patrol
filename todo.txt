@@ -1,0 +1,11 @@
+Interface Arduino with drone motors
+
+Work out equations of motion
+
+Map parking lot
+
+Translate mapping to autonomous scan
+
+Data processing
+
+Work out wireless comms @laipatel
