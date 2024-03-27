@@ -9,3 +9,5 @@ Translate mapping to autonomous scan
 Data processing
 
 Work out wireless comms @laipatel
+
+Need a 20 minute video giving a presentation (the one we were gonna make anyways) on our project including a demonstration. 
