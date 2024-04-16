@@ -1,12 +1,12 @@
-Interface Arduino with drone motors
+Finish GPS read
 
-Work out equations of motion
+Solder permanent wiring
+
+Print housing, mount sensors
 
 Map parking lot
 
-Translate mapping to autonomous scan
-
-Data processing
+Data proccessing
 
 Work out wireless comms @laipatel
 
