@@ -1,20 +1,3 @@
-/***************************************************************************
-  This is a library for the BMP3XX temperature & pressure sensor
-
-  Designed specifically to work with the Adafruit BMP388 Breakout
-  ----> http://www.adafruit.com/products/3966
-
-  These sensors use I2C or SPI to communicate, 2 or 4 pins are required
-  to interface.
-
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit and open-source hardware by purchasing products
-  from Adafruit!
-
-  Written by Limor Fried & Kevin Townsend for Adafruit Industries.
-  BSD license, all text above must be included in any redistribution
- ***************************************************************************/
-
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -23,6 +6,10 @@
 #include <TFLI2C.h>   
 #include <TinyGPSPlus.h> 
 #include <SoftwareSerial.h> 
+
+#include <ArduinoSTL.h>
+#include <map>
+#include <utility>
 
 #define BMP_SCK 13
 #define BMP_MISO 12
@@ -43,6 +30,42 @@ TFLI2C tflI2C;
  
 int16_t  tfDist;    // distance in centimeters
 int16_t  tfAddr = TFL_DEF_ADR;  // Use this default I2C address
+
+// Parking spaces occupied states - 0 free, 1 occupied
+int spaces[2][13] = 
+{
+         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
+         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+};
+
+std::map<std::pair<int, int>, std::pair<double, double>> locations; 
+
+/** Finds the closest mapped parking space by Pythagoras' Theorem and returns the corresponding index of the spot matrix.
+ * @param x latitude
+ * @param y longitude
+ * */  
+std::pair<int, int> findSpot(double x, double y)
+{
+    double minDist = 10000;
+    std::pair<int, int> returnPair = {0, 0};
+    for (auto& item : locations) 
+    {
+    
+        double xDist = x - item.second.first;
+        double yDist = y - item.second.second;
+
+        double linearDist = sqrt((xDist * xDist) + (yDist * yDist));
+
+        if (linearDist < minDist)
+        {
+            minDist = linearDist;
+            returnPair = item.first;
+        }
+    }
+
+    return returnPair;
+
+}
 
 void displayInfo() { 
 // Displaying Google Maps link with latitude and longitude information if GPS location is valid 
@@ -91,6 +114,35 @@ void setup() {
   bmp.setPressureOversampling(BMP3_OVERSAMPLING_4X);
   bmp.setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
   bmp.setOutputDataRate(BMP3_ODR_50_HZ);
+
+  // Mapped coordinates for every parking spot. The key corresponds to the spot's index in the occupied state matrix.
+  locations[{ 0, 0 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 1 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 2 }] = {1232.12, 1232.12}; 
+  locations[{ 0, 3 }] = {1232.12, 1923.4};
+  locations[{ 0, 4 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 5 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 6 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 7 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 8 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 9 }] = {1232.12, 1232.12}; 
+  locations[{ 0, 10 }] = {1232.12, 1923.4};
+  locations[{ 0, 11 }] = {1232.12, 1923.4}; 
+  locations[{ 0, 12 }] = {1232.12, 1923.4}; 
+
+  locations[{ 1, 0 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 1 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 2 }] = {1232.12, 1232.12}; 
+  locations[{ 1, 3 }] = {1232.12, 1923.4};
+  locations[{ 1, 4 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 5 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 6 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 7 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 8 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 9 }] = {1232.12, 1232.12}; 
+  locations[{ 1, 10 }] = {1232.12, 1923.4};
+  locations[{ 1, 11 }] = {1232.12, 1923.4}; 
+  locations[{ 1, 12 }] = {1232.12, 1923.4}; 
 }
 
 void loop() {
