@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/josha/Desktop/CSC159/park-patrol/Park Patrol/.pio/libdeps/uno/Adafruit BusIO"
+    "cmake.sourceDirectory": "C:/Users/josha/Desktop/CSC159/park-patrol/Park Patrol/.pio/libdeps/uno/Adafruit BusIO",
+    "C_Cpp.default.compilerPath": "C:/Users/josha/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe"
 }
