@@ -40,6 +40,9 @@ int spaces[2][13] =
 
 std::map<std::pair<int, int>, std::pair<double, double>> locations; 
 
+double curDist = 0;
+double minDist = 120;
+
 /** Finds the closest mapped parking space by Pythagoras' Theorem and returns the corresponding index of the spot matrix.
  * @param x latitude
  * @param y longitude
@@ -59,12 +62,24 @@ std::pair<int, int> findSpot(double x, double y)
         if (linearDist < minDist)
         {
             minDist = linearDist;
+            curDist = linearDist;
             returnPair = item.first;
         }
     }
 
     return returnPair;
 
+}
+
+std::pair<double, double> getCoordinates()
+{
+  std::pair<double, double> returnPair = {0, 0};
+  if (gps.location.isValid()) { 
+    returnPair.first = gps.location.lat(); 
+    returnPair.second = gps.location.lng();
+  }
+
+  return returnPair;
 }
 
 void displayInfo() { 
@@ -169,13 +184,18 @@ void loop() {
   
   */
 
+  /**
+  Serial.print("Approx. Altitude = ");
+  Serial.print(bmp.readAltitude(SEALEVELPRESSURE_HPA));
+  Serial.println(" m");
+
  if(tflI2C.getData(tfDist, tfAddr)){
         Serial.println(String(tfDist)+" cm / " + String(tfDist/2.54)+" inches");
   }else{
     Serial.println("LiDAR read failed");
   }
 
-  
+  */  
 
   if (gps.encode(ss.read())) { 
     Serial.println("GPS found");
@@ -187,6 +207,28 @@ void loop() {
   if (millis() > 5000 && gps.charsProcessed() < 10) { 
     Serial.println(F("No GPS detected: check wiring.")); 
   while(true); }
+
+
+
+  /**
+
+  double altitude = bmp.readAltitude(SEALEVELPRESSURE_HPA);
+  double distanceToGround = tfDist;
+
+  std::pair<double, double> coords = getCoordinates();
+  std::pair<int, int> closestSpace = findSpot(coords.first, coords.second);
+
+  Serial.print("Closest space: (");
+  Serial.print(closestSpace.first);
+  Serial.print(", ");
+  Serial.print(closestSpace.second);
+  Serial.println(")");
+
+  Serial.print("Distance: ");
+  Serial.println(curDist);
+
+  */
+
 
   delay(200);
 }
