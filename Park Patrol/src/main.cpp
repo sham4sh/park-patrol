@@ -135,41 +135,33 @@ void setup() {
   bmp.setOutputDataRate(BMP3_ODR_50_HZ);
 
   // Mapped coordinates for every parking spot. The key corresponds to the spot's index in the occupied state matrix.
-  locations[{ 0, 0 }] = {40.713340, 73.603134}; 
-  locations[{ 0, 1 }] = {40.713360, 73.603146}; 
-  locations[{ 0, 2 }] = {40.713380, 73.603158}; 
-  locations[{ 0, 3 }] = {40.713400, 73.603170};
-  locations[{ 0, 4 }] = {40.713420, 73.603182}; 
-  locations[{ 0, 5 }] = {40.713440, 73.603194}; 
-  locations[{ 0, 6 }] = {40.713460, 73.603206}; 
-  locations[{ 0, 7 }] = {40.713480, 73.603218}; 
-  locations[{ 0, 8 }] = {40.713500, 73.603240}; 
-  locations[{ 0, 9 }] = {40.713520, 73.603252}; 
-  locations[{ 0, 10 }] = {40.713540, 73.603264};
-  locations[{ 0, 11 }] = {40.713560, 73.603276}; 
-  locations[{ 0, 12 }] = {40.713580, 73.603288}; 
-  locations[{ 0, 13 }] = {40.713610, 73.603300}; 
+  locations[{ 0, 0 }] = {40.713344, 73.603027}; 
+  locations[{ 0, 1 }] = {40.713394, 73.603057}; 
+  locations[{ 0, 2 }] = {40.713436, 73.603096}; 
+  locations[{ 0, 3 }] = {40.713451, 73.603088};
+  locations[{ 0, 4 }] = {40.713462, 73.603103}; 
+  locations[{ 0, 5 }] = {40.713493, 73.603088}; 
+  locations[{ 0, 6 }] = {40.713512, 73.603096}; 
+  locations[{ 0, 7 }] = {40.713554, 73.603120}; 
+  locations[{ 0, 8 }] = {40.713562, 73.603130}; 
+  locations[{ 0, 9 }] = {40.713570, 73.603149}; 
 
-  locations[{ 1, 0 }] = {40.713420, 73.603065}; 
-  locations[{ 1, 1 }] = {40.713435, 73.603076}; 
-  locations[{ 1, 2 }] = {40.713450, 73.603087}; 
-  locations[{ 1, 3 }] = {40.713465, 73.603098};
-  locations[{ 1, 4 }] = {40.713480, 73.603109}; 
-  locations[{ 1, 5 }] = {40.713495, 73.603120}; 
-  locations[{ 1, 6 }] = {40.713510, 73.603131}; 
-  locations[{ 1, 7 }] = {40.713525, 73.603142}; 
-  locations[{ 1, 8 }] = {40.713540, 73.603153}; 
-  locations[{ 1, 9 }] = {40.713555, 73.603164}; 
-  locations[{ 1, 10 }] = {40.713570, 73.603175};
-  locations[{ 1, 11 }] = {40.713585, 73.603186}; 
-  locations[{ 1, 12 }] = {40.713600, 73.603202}; 
-  locations[{ 1, 13 }] = {40.713634, 73.603218}; 
+  locations[{ 1, 0 }] = {40.713390, 73.603179}; 
+  locations[{ 1, 1 }] = {40.713401, 73.603179}; 
+  locations[{ 1, 2 }] = {40.713418, 73.603181}; 
+  locations[{ 1, 3 }] = {40.713432, 73.603218};///
+  locations[{ 1, 4 }] = {40.713447, 73.603210}; 
+  locations[{ 1, 5 }] = {40.713455, 73.603238}; 
+  locations[{ 1, 6 }] = {40.713465, 73.603263}; 
+  locations[{ 1, 7 }] = {40.713478, 73.603263}; 
+  locations[{ 1, 8 }] = {40.713500, 73.603263}; 
+  locations[{ 1, 9 }] = {40.713535, 73.603263}; 
 }
 
 void loop() {
   if (! bmp.performReading()) {
     //Serial.println("Failed to perform reading :(");
-    return;
+    //return;
   }else{
     //Serial.println("Pressure read success");
   }
@@ -196,14 +188,14 @@ void loop() {
   Serial.println(" m");
   */
 
-  /**
+  
  if(tflI2C.getData(tfDist, tfAddr)){
         Serial.println(String(tfDist)+" cm / " + String(tfDist/2.54)+" inches");
   }else{
     Serial.println("LiDAR read failed");
   }
 
-  */  
+  
 
   while (ss.available() > 0) 
   { 
@@ -239,11 +231,11 @@ void loop() {
     Serial.println(")");
 
     Serial.print("Distance: ");
-    Serial.println(curDist);
+    Serial.println(curDist, 8);
   }
 
 
-  Serial.write("Helloooooo");
+  //Serial.write("Helloooooo");
   
 
   if(Serial.available() > 0){ // Checks whether data is comming from the serial port
