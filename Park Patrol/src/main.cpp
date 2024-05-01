@@ -128,6 +128,14 @@ void setup() {
     //while (1);
   }
 
+  while (! bmp.begin_SPI(BMP_CS, BMP_SCK, BMP_MISO, BMP_MOSI)) {   // hardware I2C mode, can pass in address & alt Wire
+  //if (! bmp.begin_SPI(BMP_CS)) {  // hardware SPI mode  
+  //if (! bmp.begin_SPI(BMP_CS, BMP_SCK, BMP_MISO, BMP_MOSI)) {  // software SPI mode
+    Serial.println("Could not find a valid BMP3 sensor, check wiring!");
+    delay(500);
+    //while (1);
+  }
+
   // Set up oversampling and filter initialization
   bmp.setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
   bmp.setPressureOversampling(BMP3_OVERSAMPLING_4X);
@@ -149,7 +157,7 @@ void setup() {
   locations[{ 1, 0 }] = {40.713390, 73.603179}; 
   locations[{ 1, 1 }] = {40.713401, 73.603179}; 
   locations[{ 1, 2 }] = {40.713418, 73.603181}; 
-  locations[{ 1, 3 }] = {40.713432, 73.603218};///
+  locations[{ 1, 3 }] = {40.713432, 73.603218};
   locations[{ 1, 4 }] = {40.713447, 73.603210}; 
   locations[{ 1, 5 }] = {40.713455, 73.603238}; 
   locations[{ 1, 6 }] = {40.713465, 73.603263}; 
@@ -182,18 +190,20 @@ void loop() {
   
   */
 
-  /**
+  
   Serial.print("Approx. Altitude = ");
-  Serial.print(bmp.readAltitude(SEALEVELPRESSURE_HPA));
-  Serial.println(" m");
-  */
+  Serial.print(bmp.readAltitude(SEALEVELPRESSURE_HPA) * 100);
+  Serial.println(" cm");
+  
 
   
- if(tflI2C.getData(tfDist, tfAddr)){
-        Serial.println(String(tfDist)+" cm / " + String(tfDist/2.54)+" inches");
+  if(tflI2C.getData(tfDist, tfAddr)){
+        Serial.println(String(tfDist)+" cm");
   }else{
     Serial.println("LiDAR read failed");
   }
+
+  Serial.println("Difference: " + String(abs(bmp.readAltitude(SEALEVELPRESSURE_HPA) * 100 - (tfDist))) + "cm");
 
   
 
@@ -211,7 +221,7 @@ void loop() {
   }
 
   
-
+  
 
   
 
